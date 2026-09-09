@@ -1,8 +1,18 @@
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
+import type { Noticia } from "@/generated/prisma/client";
+
+async function getNoticias(): Promise<Noticia[]> {
+  try {
+    return await prisma.noticia.findMany({ orderBy: { fecha: "desc" } });
+  } catch (error) {
+    console.error("[News] No se pudo leer Noticia desde Prisma:", error);
+    return [];
+  }
+}
 
 export default async function News() {
-  const noticias = await prisma.noticia.findMany({ orderBy: { fecha: "desc" } });
+  const noticias = await getNoticias();
 
   return (
     <section id="noticias" className="relative overflow-hidden bg-yellow-pale py-16 sm:py-[88px] px-5 sm:px-8">
