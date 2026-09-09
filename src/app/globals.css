@@ -1,26 +1,443 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fffcf6;
+  --foreground: #33312c;
+
+  --color-cream: #fffcf6;
+  --color-cream-soft: #fdf4dc;
+  --color-panel: #f5f4f1;
+  --color-border: #e7e4dc;
+  --color-ink: #33312c;
+  --color-ink-soft: #4a4842;
+  --color-muted: #6b6862;
+  --color-faint: #8a877f;
+  --color-gold: #c98a0c;
+  --color-yellow: #f0b429;
+  --color-yellow-pale: #fdf6e8;
+  --color-terracota: #e4772a;
+  --color-terracota-soft: #fbe4d2;
+  --color-dark: #33312c;
+  --color-dark-soft: #403e38;
+  --color-dark-border: #3a3833;
+  --color-footer: #211f1b;
+  --color-footer-text: #c7c4bc;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-work-sans);
+  --font-display: var(--font-poppins);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-cream: var(--color-cream);
+  --color-cream-soft: var(--color-cream-soft);
+  --color-panel: var(--color-panel);
+  --color-border: var(--color-border);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-muted: var(--color-muted);
+  --color-faint: var(--color-faint);
+  --color-gold: var(--color-gold);
+  --color-yellow: var(--color-yellow);
+  --color-yellow-pale: var(--color-yellow-pale);
+  --color-terracota: var(--color-terracota);
+  --color-terracota-soft: var(--color-terracota-soft);
+  --color-dark: var(--color-dark);
+  --color-dark-soft: var(--color-dark-soft);
+  --color-dark-border: var(--color-dark-border);
+  --color-footer: var(--color-footer);
+  --color-footer-text: var(--color-footer-text);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-work-sans), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-poppins), sans-serif;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================================
+   Hexagon motif — echoes the shield's hexagon base as a recurring
+   geometric signature (badges, seal-style frame accents) instead
+   of generic flat cards.
+   ============================================================ */
+.hex-badge {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.hex-frame-cut {
+  clip-path: polygon(28px 0, 100% 0, 100% calc(100% - 28px), calc(100% - 28px) 100%, 0 100%, 0 28px);
+}
+
+/* Navbar links: filling underline effect (adapted from Uiverse by joe-watson-sbf) */
+.nav-link {
+  position: relative;
+  display: inline-block;
+  color: var(--color-ink);
+  transition: color 0.5s ease;
+  z-index: 1;
+}
+.nav-link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: var(--color-yellow);
+  transition: width 0.5s ease;
+}
+.nav-link:hover::before {
+  width: 100%;
+}
+.nav-link:hover {
+  color: var(--color-ink);
+  transition-delay: 0.5s;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 0;
+  width: 100%;
+  background-color: var(--color-yellow);
+  transition: height 0.4s ease;
+  z-index: -1;
+}
+.nav-link:hover::after {
+  height: 100%;
+  transition-delay: 0.4s;
+}
+
+/* ============================================================
+   Gallery carousel ("Momentos Lazarillo")
+   Layer 1 (below): universal base — scroll-snap + JS controls,
+   works in every browser (Safari/iPhone included).
+   Layer 2 (further below, gated by @supports): progressive
+   enhancement with native ::scroll-marker-group / ::scroll-button()
+   / scroll-state() for Chrome/Edge 133+. JS controls hide there
+   and the browser draws its own.
+   ============================================================ */
+.gallery-carousel-wrap {
+  position: relative;
+  padding-inline: 2.75rem;
+}
+
+.gallery-carousel {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0 1rem;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(72vw, 260px);
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.gallery-carousel::-webkit-scrollbar {
+  display: none;
+}
+.gallery-carousel::before,
+.gallery-carousel::after {
+  content: "";
+}
+.gallery-carousel > li {
+  position: relative;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+.gallery-carousel__img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(51, 49, 44, 0.18);
+}
+.gallery-carousel > li > p {
+  margin: 0.7rem 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+/* Universal fallback controls, driven by React (see Gallery.tsx) */
+.carousel-js-btn {
+  position: absolute;
+  top: 45%;
+  translate: 0 -50%;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-content: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-gold);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+  z-index: 2;
+}
+.carousel-js-btn:hover:not(:disabled),
+.carousel-js-btn:focus-visible:not(:disabled) {
+  background: var(--color-yellow);
+  color: var(--color-ink);
+}
+.carousel-js-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.carousel-js-btn--prev {
+  left: 0;
+}
+.carousel-js-btn--next {
+  right: 0;
+}
+
+.carousel-js-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+.carousel-js-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-border);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.carousel-js-dot.is-active {
+  background: var(--color-gold);
+  transform: scale(1.25);
+}
+
+/* Progressive enhancement layer: only where the browser understands
+   ::scroll-marker-group (Chrome/Edge 133+ as of 2026; no Safari/Firefox). */
+@supports selector(::scroll-marker-group) {
+  .carousel-js-btn,
+  .carousel-js-dots {
+    display: none;
+  }
+
+  .gallery-carousel-wrap {
+    padding-inline: 0;
+  }
+
+  .gallery-carousel {
+    padding-block: 2rem 3.5rem;
+    gap: 0;
+    anchor-name: --gallery-carousel;
+    scroll-marker-group: after;
+  }
+
+  .gallery-carousel::scroll-marker-group {
+    position: absolute;
+    position-anchor: --gallery-carousel;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    top: anchor(bottom);
+    left: anchor(left);
+    right: anchor(right);
+  }
+
+  .gallery-carousel > li {
+    container-type: scroll-state;
+  }
+
+  .gallery-carousel > li::scroll-marker {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-border);
+    transition: background 150ms ease-in-out, scale 150ms ease-in-out;
+  }
+  .gallery-carousel > li::scroll-marker:target-current {
+    background: var(--color-gold);
+    scale: 1.25;
+  }
+  .gallery-carousel > li::scroll-marker:where(:hover, :focus-visible) {
+    background: var(--color-yellow);
+  }
+  .gallery-carousel > li::scroll-marker:focus-visible {
+    outline: 1px dashed var(--color-gold);
+    outline-offset: 4px;
+  }
+
+  .gallery-carousel__img,
+  .gallery-carousel > li > p {
+    transition: all 300ms ease-in-out;
+  }
+  .gallery-carousel > li > p {
+    white-space: nowrap;
+  }
+  @container not scroll-state(snapped: inline) {
+    .gallery-carousel__img {
+      scale: 0.88;
+      opacity: 0.55;
+    }
+    .gallery-carousel > li > p {
+      scale: 0.9;
+      opacity: 0;
+    }
+  }
+
+  .gallery-carousel::scroll-button(*) {
+    position: absolute;
+    position-anchor: --gallery-carousel;
+    top: anchor(center);
+    translate: 0 -50%;
+    width: 40px;
+    aspect-ratio: 1;
+    font: inherit;
+    background-color: var(--color-gold);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+    opacity: 0.85;
+    cursor: pointer;
+    transition: all 150ms ease-in-out;
+  }
+  .gallery-carousel::scroll-button(inline-start) {
+    content: "❮";
+    left: calc(anchor(left) - 48px);
+  }
+  .gallery-carousel::scroll-button(inline-end) {
+    content: "❯";
+    right: calc(anchor(right) - 48px);
+  }
+  .gallery-carousel::scroll-button(*):not(:disabled):where(:hover, :focus-visible) {
+    opacity: 1;
+    background: var(--color-yellow);
+    color: var(--color-ink);
+  }
+  .gallery-carousel::scroll-button(*):disabled {
+    opacity: 0.25;
+    cursor: unset;
+  }
+}
+
+/* Gooey button: 3 blobs merge into a solid fill on hover (needs #goo SVG
+   filter from GooeyFilter.tsx, rendered once in the root layout). Colors
+   are set per-instance via --gooey-color / --gooey-hover-text so each
+   button keeps its own brand color instead of a hardcoded one. */
+.gooey-btn {
+  --gooey-hover-text: #fff;
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 2px solid var(--gooey-color);
+  border-radius: 0.5rem;
+  color: var(--gooey-color);
+  background: transparent;
+  transition: color 700ms ease;
+}
+.gooey-btn__blobs {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: inherit;
+  filter: url(#goo);
+}
+.gooey-btn__blobs span {
+  position: absolute;
+  left: 0;
+  width: 34%;
+  height: 100%;
+  border-radius: 100%;
+  background-color: var(--gooey-color);
+  transform: scale(1.4) translateY(125%) translateZ(0);
+  transition: transform 700ms ease;
+}
+.gooey-btn__blobs span:nth-child(1) {
+  left: -5%;
+}
+.gooey-btn__blobs span:nth-child(2) {
+  left: 30%;
+  transition-delay: 60ms;
+}
+.gooey-btn__blobs span:nth-child(3) {
+  left: 66%;
+  transition-delay: 25ms;
+}
+.gooey-btn:hover {
+  color: var(--gooey-hover-text);
+}
+.gooey-btn:hover .gooey-btn__blobs span {
+  transform: scale(1.4) translateY(0) translateZ(0);
+}
+.gooey-btn__label {
+  position: relative;
+  z-index: 1;
+}
+
+/* "Iniciar sesión" button: expanding circle effect (adapted from Uiverse) */
+.login-btn {
+  --color: var(--color-gold);
+  font-family: inherit;
+  display: inline-block;
+  width: 8em;
+  height: 2.6em;
+  line-height: 2.5em;
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  border: 2px solid var(--color);
+  transition: color 0.5s;
+  z-index: 1;
+  font-size: 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: var(--color);
+  background: transparent;
+}
+.login-btn::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background: var(--color);
+  height: 150px;
+  width: 200px;
+  border-radius: 50%;
+  top: 100%;
+  left: 100%;
+  transition: top 0.5s, left 0.5s;
+}
+.login-btn:hover {
+  color: #fff;
+}
+.login-btn:hover::before {
+  top: -30px;
+  left: -30px;
 }

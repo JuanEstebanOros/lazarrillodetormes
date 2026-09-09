@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Noticia {
+  id        String   @id @default(cuid())
+  titulo    String
+  fecha     DateTime
+  imagenUrl String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteContent {
+  id    String @id @default(cuid())
+  section String
+  key     String
+  value   String @db.Text
+  type    String // "text" | "image"
+
+  @@unique([section, key])
+}
+
+model MomentoLazarillo {
+  id        String   @id @default(cuid())
+  imagenUrl String
+  caption   String
+  order     Int
+  createdAt DateTime @default(now())
+}
