@@ -3,9 +3,9 @@ import Image from "next/image";
 export default function OriginName() {
   return (
     <div className="grid gap-10 items-center bg-cream-soft rounded-[20px] p-6 sm:p-10 mb-14 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
-      <div className="relative w-full max-w-[380px] mx-auto aspect-[337/326] rounded-2xl bg-panel">
+      <div className="relative w-full max-w-[380px] mx-auto aspect-[1128/1394] rounded-2xl bg-panel">
         <Image
-          src="/images/abuelo.png"
+          src="/images/IMGABUELO.jpeg"
           alt="Lázaro Lasso Quintero, origen del nombre Lazarillo de Tormes"
           fill
           sizes="(max-width: 640px) 100vw, 50vw"
