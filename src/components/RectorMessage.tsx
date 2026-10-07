@@ -5,7 +5,7 @@ export default function RectorMessage() {
     <div className="flex flex-wrap gap-8 items-center">
       <div className="relative w-[140px] h-[140px] sm:w-40 sm:h-40 rounded-full overflow-hidden bg-panel shrink-0">
         <Image
-          src="/images/dueños.png"
+          src="/images/fundadores-retrato.jpg"
           alt="Maira Alejandra Lasso Cruz y Julio Arturo Vargas Soto"
           fill
           sizes="160px"
